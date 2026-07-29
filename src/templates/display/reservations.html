@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Reservations{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <style> table, th, td { border: 1px solid black; } </style>
+
+    <table class="table">
+        <tr>
+            <th>  Reference Name  </th>
+            <th>  Date  </th>
+            <th>  Start Time  </th>
+            <th>  End Time  </th>
+        </tr>
+
+        {% for reservation in reservations %}
+        <tr>
+            <td>{{ reservation.name_under }}</td>
+            <td>{{ reservation.date }}</td>
+            <td>${{ reservation.start_time }}</td>
+            <td>{{ reservation.end_time }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br><br><form method="POST">
+        <input type="submit" value="Back" name="back">
+    </form><br><br>
+
+    <h2>Add Reservation</h2>
+    <form method="POST">
+        <label>Reference Name: </label> <input type="text" name="name"><br>
+        <label>Date: </label> <input type="date" name="date"><br>
+        <label>Start Time: </label> <input type="time" name="start_time"><br>
+        <label>End Time: </label> <input type="time" name="end_time"><br><br>
+        <label>Instruments: </label> <select name="instruments" multiple>
+            {% for instrument in instruments %}
+                <option>{{instrument.name}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" name="submit_reservation" value="Submit">
+    </form>
+{% endblock %}

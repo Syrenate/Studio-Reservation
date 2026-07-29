@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Echo Music Studio{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <label>Main Page.</label><br>
+    <form method="POST">
+      <input type="Submit" name="view_reservations" value="View Reservations">
+    </form>
+{% endblock %}

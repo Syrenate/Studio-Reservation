@@ -5,41 +5,45 @@
 {% endblock %}
 
 {% block content %}
-    <style> table, th, td { border: 1px solid black; } </style>
+    {% if session %}
+        <style> table, th, td { border: 1px solid black; } </style>
 
-    <table class="table">
-        <tr>
-            <th>  Reference Name  </th>
-            <th>  Date  </th>
-            <th>  Start Time  </th>
-            <th>  End Time  </th>
-        </tr>
+        <table class="table">
+            <tr>
+                <th>  Reference Name  </th>
+                <th>  Date  </th>
+                <th>  Start Time  </th>
+                <th>  End Time  </th>
+            </tr>
 
-        {% for reservation in reservations %}
-        <tr>
-            <td>{{ reservation.name_under }}</td>
-            <td>{{ reservation.date }}</td>
-            <td>${{ reservation.start_time }}</td>
-            <td>{{ reservation.end_time }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <br><br><form method="POST">
-        <input type="submit" value="Back" name="back">
-    </form><br><br>
-
-    <h2>Add Reservation</h2>
-    <form method="POST">
-        <label>Reference Name: </label> <input type="text" name="name"><br>
-        <label>Date: </label> <input type="date" name="date"><br>
-        <label>Start Time: </label> <input type="time" name="start_time"><br>
-        <label>End Time: </label> <input type="time" name="end_time"><br><br>
-        <label>Instruments: </label> <select name="instruments" multiple>
-            {% for instrument in instruments %}
-                <option>{{instrument.name}}</option>
+            {% for reservation in reservations %}
+            <tr>
+                <td>{{ reservation.name_under }}</td>
+                <td>{{ reservation.date }}</td>
+                <td>{{ reservation.start_time }}</td>
+                <td>{{ reservation.end_time }}</td>
+            </tr>
             {% endfor %}
-        </select>
-        <input type="submit" name="submit_reservation" value="Submit">
-    </form>
+        </table>
+
+        <br><br><form method="POST">
+            <input type="submit" value="Back" name="back">
+        </form><br><br>
+
+        <h2>Add Reservation</h2>
+        <form method="POST">
+            <label>Reference Name: </label> <input type="text" name="name"><br>
+            <label>Date: </label> <input type="date" name="date"><br>
+            <label>Start Time: </label> <input type="time" name="start_time"><br>
+            <label>End Time: </label> <input type="time" name="end_time"><br>
+            <label>Instruments: </label><br> <select name="instrument_select" multiple>
+                {% for instrument in instruments %}
+                    <option value={{instrument.name}}>{{instrument.name}} ({{instrument.available}} available)</option>
+                {% endfor %}
+            </select><br><br>
+            <input type="submit" name="submit_reservation" value="Submit Reservation">
+        </form>
+    {% else %}
+        <label>You must be logged in to view and submit reservations. </label>
+    {% endif %}
 {% endblock %}

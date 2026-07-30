@@ -5,9 +5,13 @@
 {% endblock %}
 
 {% block content %}
-    <label>Are you sure you want to log out of {{session.user.user_metadata["full_name"]}}?</label><br>
-    <form method="POST">
-        <input type="submit" name="yes" value="Yes">
-        <input type="submit" name="no" value="No">
-    </form>
+    {% if session %}
+        <label>Are you sure you want to log out of {{session.user.user_metadata["full_name"]}}?</label><br>
+        <form method="POST">
+            <input type="submit" name="yes" value="Yes">
+            <input type="submit" name="no" value="No">
+        </form>
+    {% else %}
+        <label> Not logged in! </label>
+    {% endif %}
 {% endblock %}

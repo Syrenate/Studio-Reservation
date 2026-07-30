@@ -5,16 +5,20 @@
 {% endblock %}
 
 {% block content %}
-    <form method="POST">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email"><br>
+    {% if session %}
+        <label>Already logged in!</label>
+    {% else %}
+        <form method="POST">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email"><br>
 
-        <label for="pass">Password:</label>
-        <input type="password" id="pass" name="pass"><br><br>
+            <label for="pass">Password:</label>
+            <input type="password" id="pass" name="pass"><br><br>
 
-        <input type="submit" name="submit" value="Submit">
-        <input type="submit" name="back" value="Back">
-    </form>
+            <input type="submit" name="submit" value="Submit">
+            <input type="submit" name="back" value="Back">
+        </form>
+    {% endif %}
 {% endblock %}
 
 {% block error_msg %}{% endblock %}

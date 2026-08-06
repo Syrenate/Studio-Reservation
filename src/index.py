@@ -2,7 +2,7 @@ from flask import Flask, request, url_for, redirect, render_template
 from SupabaseConnect import LoadClient, Client
 from DatabaseControls import create_reservation
 
-flask_app = Flask(__name__)
+app = Flask(__name__)
 supabase_client = LoadClient()
     
 ## Utils
@@ -26,7 +26,7 @@ def account_request_handle():
 
 ## Page Routes
 
-@flask_app.route('/', methods = ["GET", "POST"])
+@app.route('/', methods = ["GET", "POST"])
 def root():
     if request.method == "POST":
         account_request = account_request_handle()
@@ -40,7 +40,7 @@ def root():
     return render_page("display/root")
 
 
-@flask_app.route('/register', methods = ["GET", "POST"])
+@app.route('/register', methods = ["GET", "POST"])
 def register():
     if request.method == "POST":
         account_request = account_request_handle()
@@ -63,7 +63,7 @@ def register():
     return render_page("auth/register")
 
 
-@flask_app.route('/login', methods = ["GET", "POST"])
+@app.route('/login', methods = ["GET", "POST"])
 def login():
     if request.method == "POST":
         account_request = account_request_handle()
@@ -84,7 +84,7 @@ def login():
 
     return render_page("auth/login")
 
-@flask_app.route('/logout', methods = ["GET", "POST"])
+@app.route('/logout', methods = ["GET", "POST"])
 def logout():
     if request.method == "POST":
         account_request = account_request_handle()
@@ -110,7 +110,7 @@ def render_reservation_page(error_msg: str = ""):
                            instruments = all_instruments.data) + f"<br><br><label>{error_msg}</label>"
 
 
-@flask_app.route('/reservations', methods = ["GET", "POST"])
+@app.route('/reservations', methods = ["GET", "POST"])
 def reservations():
     if request.method == "POST":
         account_request = account_request_handle()
@@ -137,7 +137,7 @@ def reservations():
 
     return render_reservation_page()
 
-@flask_app.route("/instruments", methods=["GET", "POST"])
+@app.route("/instruments", methods=["GET", "POST"])
 def instruments():
     if request.method == "POST":
         account_request = account_request_handle()
@@ -153,4 +153,4 @@ def instruments():
 
 
 if __name__ == '__main__':
-    flask_app.run(debug=True) 
+    app.run(debug=True) 

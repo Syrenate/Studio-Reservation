@@ -1,6 +1,6 @@
 # Studio Reservation Software
 
-Client-side multi-tenant reservation software for the fictional Echo Music Studio, database framework using Supabase with html frontend built with Flask. Account management system allows users to register and login using their email and a password, handled by Supabase, and can make reservations under their account. 
+Client-side multi-tenant reservation software for the fictional Echo Music Studio, using Supabase as database framework and Flask as the frontend. At least thats the idea. Getting there.
 
 **DO NOT ENTER ANY SENSITIVE INFORMATION. I AM NOT CONFIDENT IN MY SECURITY INFRASTRUCTURE.**
 

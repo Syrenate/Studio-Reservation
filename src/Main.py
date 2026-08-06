@@ -3,11 +3,25 @@ from SupabaseConnect import LoadClient, Client
 from DatabaseControls import create_reservation
 
 flask_app = Flask(__name__)
-supabase_client: Client
+supabase_client = LoadClient()
+    
+## Utils
 
-if __name__ == '__main__':
-    supabase_client = LoadClient()
-    flask_app.run(debug=True) 
+def render_page(path: str):
+    full_path = f"{path}.html"
+
+    session = supabase_client.auth.get_session()
+    if session != None: return render_template(full_path, session=session)
+    else:               return render_template(full_path)
+
+def redirect_to(page: str):
+    return redirect(url_for(page))
+
+def account_request_handle():
+    session = supabase_client.auth.get_session()
+    return redirect_to('login')    if request.form.get('login')    and session == None else \
+           redirect_to('register') if request.form.get('register') and session == None else \
+           redirect_to('logout')   if request.form.get('logout')   and session != None else None
 
 
 ## Page Routes
@@ -31,7 +45,6 @@ def register():
     if request.method == "POST":
         account_request = account_request_handle()
         if account_request != None: return account_request
-
 
         if request.form.get('back') != None: 
             return redirect_to("root")
@@ -79,8 +92,8 @@ def logout():
 
         if request.form.get("yes") != None:
             supabase_client.auth.sign_out()
-
             return redirect_to("root")
+        
         if request.form.get("no") != None:
             return redirect_to("root")
 
@@ -107,25 +120,20 @@ def reservations():
             return redirect_to("root")
 
         if request.form.get('submit_reservation') != None:
-            reference_name = request.form.get('name')
-            date = request.form.get('date')
-            start_time = request.form.get('start_time')
-            end_time = request.form.get('end_time')
             instruments = request.form.get('instrument_select')
             print(instruments)
 
-            created = create_reservation(
-                    reference_name=reference_name, 
+            created = create_reservation(database_client=supabase_client,
+                    reference_name=request.form.get('name'), 
                     instruments=instruments, 
-                    date=date, 
-                    start_time=start_time, 
-                    end_time=end_time
+                    date=request.form.get('date'), 
+                    start_time=request.form.get('start_time'), 
+                    end_time=request.form.get('end_time')
                 )
 
             if not created:
                 error_msg = "This reservation clashes with an existing reservation! Please choose another timeslot."
                 return render_reservation_page(error_msg)
-
 
     return render_reservation_page()
 
@@ -141,21 +149,8 @@ def instruments():
     all_instruments = supabase_client.from_("instruments").select("*").execute()
     return render_template("display/instruments.html", instruments=all_instruments.data)
 
-    
-## Utils
 
-def render_page(path: str):
-    full_path = f"{path}.html"
 
-    session = supabase_client.auth.get_session()
-    if session != None: return render_template(full_path, session=session)
-    else:               return render_template(full_path)
 
-def redirect_to(page: str):
-    return redirect(url_for(page))
-
-def account_request_handle():
-    session = supabase_client.auth.get_session()
-    return redirect_to('login')    if request.form.get('login')    and session == None else \
-           redirect_to('register') if request.form.get('register') and session == None else \
-           redirect_to('logout')   if request.form.get('logout')   and session != None else None
+if __name__ == '__main__':
+    flask_app.run(debug=True) 

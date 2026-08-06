@@ -12,7 +12,6 @@ dependencies = [
     "flask>=3.1.3", 
     "dotenv>=0.9.9"
 ]
-tool.vercel.entrypoint = "src/Main.py"
 
 [project.scripts]
 main_script = "Main:main"
